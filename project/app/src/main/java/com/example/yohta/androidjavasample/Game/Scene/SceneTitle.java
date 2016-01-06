@@ -4,6 +4,7 @@ import com.example.yohta.androidjavasample.Game.BackGround.BackGround;
 import com.example.yohta.androidjavasample.Lib.GameScene;
 import com.example.yohta.androidjavasample.Lib.Global;
 import com.example.yohta.androidjavasample.Lib.Graphic2D;
+import com.example.yohta.androidjavasample.R;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -12,6 +13,8 @@ public class SceneTitle extends GameScene
     public float angle = 0.0f;
 
     public int x, y;
+
+    public int texTitle;
 
     @Override
     public void Initialize()
@@ -42,6 +45,8 @@ public class SceneTitle extends GameScene
         if ( !isInitializd() ) return;
 
         BackGround.getInstance().Draw(gl);
+
+        Graphic2D.drawTexture( gl, Global.texTitle, ( Global.DrawScreenWidth - Graphic2D.getTextureWidth(Global.texTitle) ) / 2, 200, 64, 64, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
         Graphic2D.drawTexture( gl, Global.testTexture, x, y, 64, 64, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     }
 }

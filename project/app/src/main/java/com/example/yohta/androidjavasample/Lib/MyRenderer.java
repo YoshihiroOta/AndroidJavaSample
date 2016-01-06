@@ -53,6 +53,7 @@ public class MyRenderer implements GLSurfaceView.Renderer
         Global.DrawScreenHeight = 960;
 
         Global.testTexture = Graphic2D.loadTexture(gl, m_Context.getResources(), R.drawable.player);
+        Global.texTitle = Graphic2D.loadTexture(gl, m_Context.getResources(), R.drawable.title);
 
         Global.m_SystemEnable = true;
     }
