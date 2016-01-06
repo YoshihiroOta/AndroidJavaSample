@@ -1,7 +1,9 @@
-package com.example.yohta.androidjavasample;
+package com.example.yohta.androidjavasample.Lib;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+
+import com.example.yohta.androidjavasample.R;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -30,10 +32,10 @@ public class MyRenderer implements GLSurfaceView.Renderer
         gl.glEnable(GL10.GL_BLEND);
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
-        Graphic2D.drawRect(gl, 0, 0, Global.DrawScreenWidth / 2, Global.DrawScreenHeight / 2, 0.5f, 0.5f, 0.5f, 1.0f);
-//        Graphic2D.drawTexture(gl, Global.testTexture, 0, 0, 64, 64);
-        Graphic2D.drawTexture( gl, Global.testTexture, 0, 0, 64, 64, 1.0f, 1.0f, 1.0f, 0.5f);
-//        Graphic2D.drawTexture( gl, Global.testTexture, 0, 0, 64, 64, 32, 32, 32, 32, 1.0f, 1.0f, 1.0f, 1.0f);
+        if ( Global.m_SystemEnable )
+        {
+            m_GameThread.Draw(gl);
+        }
     }
 
     @Override
@@ -50,7 +52,9 @@ public class MyRenderer implements GLSurfaceView.Renderer
         Global.DrawScreenWidth  = 720;
         Global.DrawScreenHeight = 960;
 
-        Global.testTexture = Graphic2D.loadTexture( gl, m_Context.getResources(), R.drawable.player );
+        Global.testTexture = Graphic2D.loadTexture(gl, m_Context.getResources(), R.drawable.player);
+
+        Global.m_SystemEnable = true;
     }
 
     @Override

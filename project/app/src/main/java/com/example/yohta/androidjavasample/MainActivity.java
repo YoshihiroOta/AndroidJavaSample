@@ -1,20 +1,22 @@
 package com.example.yohta.androidjavasample;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+
+import com.example.yohta.androidjavasample.Game.SceneManager;
+import com.example.yohta.androidjavasample.Lib.GameScene;
+import com.example.yohta.androidjavasample.Lib.Global;
+import com.example.yohta.androidjavasample.Lib.MyGLSurfaceView;
+import com.example.yohta.androidjavasample.Lib.MyGameThread;
+import com.example.yohta.androidjavasample.Lib.MyRenderer;
 
 public class MainActivity extends AppCompatActivity
 {
-    private MyGameThread        m_GameThread;
-    
+    private MyGameThread m_GameThread;
+    private SceneManager m_SceneManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -22,10 +24,9 @@ public class MainActivity extends AppCompatActivity
 
         Global.mainActivity = this;
 
-        m_GameThread = new MyGameThread();
+        m_SceneManager = new SceneManager();
 
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        m_GameThread = new MyGameThread( m_SceneManager );
 
         MyRenderer renderer             = new MyRenderer( this, m_GameThread );
         MyGLSurfaceView glSurfaceView   = new MyGLSurfaceView( this, m_GameThread );

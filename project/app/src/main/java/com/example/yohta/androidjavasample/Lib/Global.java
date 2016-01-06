@@ -1,4 +1,6 @@
-package com.example.yohta.androidjavasample;
+package com.example.yohta.androidjavasample.Lib;
+
+import com.example.yohta.androidjavasample.MainActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -9,13 +11,18 @@ public class Global
 {
     public static GL10             gl;
 
-    public static MainActivity      mainActivity;
+    public static boolean         m_SystemEnable = false;
+
+    public static MainActivity     mainActivity;
     public static int              ScreenWidth;
     public static int              ScreenHeight;
 
     public static int              DrawScreenWidth;
     public static int              DrawScreenHeight;
 
-
     public static int              testTexture;
+
+    public static boolean           isTouch;
+    public static int               TouchX;
+    public static int               TouchY;
 }

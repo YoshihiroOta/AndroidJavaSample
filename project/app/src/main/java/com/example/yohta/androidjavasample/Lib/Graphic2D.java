@@ -1,4 +1,4 @@
-package com.example.yohta.androidjavasample;
+package com.example.yohta.androidjavasample.Lib;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -10,8 +10,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
-
-import java.util.ArrayList;
 
 public class Graphic2D
 {
@@ -74,23 +72,46 @@ public class Graphic2D
         return texmanager.getHeight(no);
     }
 
-    public static final void drawRect( GL10 gl, int x, int y, int width, int height, float r, float g, float b, float a )
+    public static final void drawRect( GL10 gl, int x, int y, int width, int height, float angle, float r, float g, float b, float a )
     {
-        //ウィンドウ座標を正規化デバイス座標に変換
-        float left  = ((float)         x / (float)Global.DrawScreenWidth)*2.0f-1.0f;
-        float top   = ((float)         y / (float)Global.DrawScreenHeight)*2.0f-1.0f;
-        float right = ((float)(x+width)  / (float)Global.DrawScreenWidth)*2.0f-1.0f;
-        float bottom= ((float)(y+height) / (float)Global.DrawScreenHeight)*2.0f-1.0f;
+        float[] vx = new float[4];
+        float[] vy = new float[4];
 
-        top    = -top;
-        bottom = -bottom;
+        vx[0] = -((float) width / 2.0f);
+        vy[0] = -((float) height / 2.0f);
+
+        vx[1] = -((float) width / 2.0f);
+        vy[1] =  ((float) height / 2.0f);
+
+        vx[2] =  ((float) width / 2.0f);
+        vy[2] = -((float) height / 2.0f);
+
+        vx[3] =  ((float) width / 2.0f);
+        vy[3] =  ((float) height / 2.0f);
+
+        angle = angle * ((float) Math.PI / 180.0f);
+
+        for (int i = 0; i < 4; i++)
+        {
+            float wkx = (float)Math.cos((double) angle) * vx[i] - (float)Math.sin((double) angle) * vy[i];
+            float wky = (float)Math.sin((double) angle) * vx[i] + (float)Math.cos((double) angle) * vy[i];
+
+            vx[i] = wkx;
+            vy[i] = wky;
+
+            vx[i] += ( (float) x + (float) width  / 2.0f );
+            vy[i] += ( (float) y + (float) height / 2.0f );
+
+            vx[i] = ( vx[i] / (float)Global.DrawScreenWidth)  * 2.0f - 1.0f;
+            vy[i] = ( vy[i] / (float)Global.DrawScreenHeight) * 2.0f - 1.0f;
+        }
 
         float[] vertex =
         {
-            left, top,      //頂点0
-            left, bottom,   //頂点1
-            right,top,      //頂点2
-            right,bottom    //頂点3
+            vx[0], -vy[0],
+            vx[1], -vy[1],
+            vx[2], -vy[2],
+            vx[3], -vy[3]
         };
 
         float[] color =
@@ -111,26 +132,55 @@ public class Graphic2D
         gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
 
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+
     }
 
-    public static final void drawTexture( GL10 gl, int texture, int x, int y, int width, int height, int u, int v, int texw, int texh,  float r, float g, float b, float a )
+    public static final void drawRect( GL10 gl, int x, int y, int width, int height, float r, float g, float b, float a )
     {
-        //ウィンドウ座標を正規化デバイス座標に変換
-        float left  = ((float)         x / (float)Global.DrawScreenWidth)*2.0f-1.0f;
-        float top   = ((float)         y / (float)Global.DrawScreenHeight)*2.0f-1.0f;
-        float right = ((float)(x+width)  / (float)Global.DrawScreenWidth)*2.0f-1.0f;
-        float bottom= ((float)(y+height) / (float)Global.DrawScreenHeight)*2.0f-1.0f;
+        drawRect( gl, x, y, width, height, 0.0f, r, g, b, a );
+    }
 
-        top    = -top;
-        bottom = -bottom;
+    public static final void drawTexture( GL10 gl, int texture, int x, int y, int width, int height, float angle, int u, int v, int texw, int texh,  float r, float g, float b, float a )
+    {
+        float[] vx = new float[4];
+        float[] vy = new float[4];
+
+        vx[0] = -((float) width / 2.0f);
+        vy[0] = -((float) height / 2.0f);
+
+        vx[1] = -((float) width / 2.0f);
+        vy[1] =  ((float) height / 2.0f);
+
+        vx[2] =  ((float) width / 2.0f);
+        vy[2] = -((float) height / 2.0f);
+
+        vx[3] =  ((float) width / 2.0f);
+        vy[3] =  ((float) height / 2.0f);
+
+        angle = angle * ((float) Math.PI / 180.0f);
+
+        for (int i = 0; i < 4; i++)
+        {
+            float wkx = (float)Math.cos((double) angle) * vx[i] - (float)Math.sin((double) angle) * vy[i];
+            float wky = (float)Math.sin((double) angle) * vx[i] + (float)Math.cos((double) angle) * vy[i];
+
+            vx[i] = wkx;
+            vy[i] = wky;
+
+            vx[i] += ( (float) x + (float) width  / 2.0f );
+            vy[i] += ( (float) y + (float) height / 2.0f );
+
+            vx[i] = ( vx[i] / (float)Global.DrawScreenWidth)  * 2.0f - 1.0f;
+            vy[i] = ( vy[i] / (float)Global.DrawScreenHeight) * 2.0f - 1.0f;
+        }
 
         float[] vertex =
-                {
-                        left, top,      //頂点0
-                        left, bottom,   //頂点1
-                        right,top,      //頂点2
-                        right,bottom    //頂点3
-                };
+        {
+            vx[0], -vy[0],
+            vx[1], -vy[1],
+            vx[2], -vy[2],
+            vx[3], -vy[3]
+        };
 
         float[] color =
                 {
@@ -177,11 +227,21 @@ public class Graphic2D
 
     public static final void drawTexture( GL10 gl, int texture, int x, int y, int width, int height )
     {
-        drawTexture( gl, texture, x, y, width, height, 0, 0, texmanager.getWidth(texture), texmanager.getHeight(texture), 1.0f, 1.0f, 1.0f, 1.0f );
+        drawTexture( gl, texture, x, y, width, height, 0.0f, 0, 0, texmanager.getWidth(texture), texmanager.getHeight(texture), 1.0f, 1.0f, 1.0f, 1.0f );
+    }
+
+    public static final void drawTexture( GL10 gl, int texture, int x, int y, int width, int height, float angle )
+    {
+        drawTexture( gl, texture, x, y, width, height, angle, 0, 0, texmanager.getWidth(texture), texmanager.getHeight(texture), 1.0f, 1.0f, 1.0f, 1.0f );
     }
 
     public static final void drawTexture( GL10 gl, int texture, int x, int y, int width, int height, float r, float g, float b, float a )
     {
-        drawTexture( gl, texture, x, y, width, height, 0, 0, texmanager.getWidth(texture), texmanager.getHeight(texture), r, g, b, a );
+        drawTexture( gl, texture, x, y, width, height, 0.0f, 0, 0, texmanager.getWidth(texture), texmanager.getHeight(texture), r, g, b, a );
+    }
+
+    public static final void drawTexture( GL10 gl, int texture, int x, int y, int width, int height, float angle, float r, float g, float b, float a )
+    {
+        drawTexture( gl, texture, x, y, width, height, angle, 0, 0, texmanager.getWidth(texture), texmanager.getHeight(texture), r, g, b, a );
     }
 }

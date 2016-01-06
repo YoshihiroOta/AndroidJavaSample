@@ -1,4 +1,4 @@
-package com.example.yohta.androidjavasample;
+package com.example.yohta.androidjavasample.Lib;
 
 import java.util.ArrayList;
 
